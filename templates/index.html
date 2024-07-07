@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gamepad Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 680px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+        .data {
+            color: #fff;
+            font-size: 30px;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+        }
+        .lt {
+            width: 200px; /* Задаем фиксированную ширину для элемента LT */
+        }
+        .rt {
+            width: 200px; /* Задаем фиксированную ширину для элемента RT */
+        }
+    </style>
+    <script>
+        function updateData() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('lt').textContent = data.lt + '%';
+                    document.getElementById('rt').textContent = data.rt + '%';
+                });
+        }
+
+        setInterval(updateData, 100);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="data lt">LT: <span id="lt">0%</span></div>
+        <div class="data rt">RT: <span id="rt">{{ rt }}%</span></div>
+    </div>
+</body>
+</html>
