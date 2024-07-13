@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- saved from url=(0039)https://gamepadviewer.com/?p=1&smeter=1 -->
-<html style="overflow: hidden; background: transparent !important;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html style="overflow: hidden;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>GamePad Viewer - The Official Controller Display &amp; Tester</title>
     <link rel="icon" type="image/png" href="https://gamepadviewer.com/app-icon.png">
     <link rel="stylesheet" type="text/css" href="/static/css/lt_rt_percent.css?1">
@@ -92,6 +92,89 @@
                 });
         }
 
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] === variable) {
+                    return decodeURIComponent(pair[1].replace(/\+/g, ' '));
+                }
+            }
+            return false;
+        }
+
+        function setQueryVariable(key, value) {
+            var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
+            var urlQueryString = document.location.search;
+            var newParam = key + '=' + value;
+            var params = '?' + newParam;
+
+            // If the "search" string exists, then build params from it
+            if (urlQueryString) {
+                var keyRegex = new RegExp('([?&])' + key + '[^&]*');
+                if (urlQueryString.match(keyRegex) !== null) {
+                    params = urlQueryString.replace(keyRegex, "$1" + newParam);
+                } else {
+                    params = urlQueryString + '&' + newParam;
+                }
+            }
+            window.history.replaceState({}, "", baseUrl + params);
+        }
+
+        $(document).ready(function() {
+            // Открыть модальное окно при клике на любую область, кроме самого модального окна и кнопки закрытия
+            $(document).click(function(event) {
+                if (!$(event.target).closest('.modal-content, .close').length) {
+                    $('#myModal').show();
+                }
+            });
+
+            // Закрыть модальное окно при клике на <span> (x)
+            $('.close').click(function() {
+                $('#myModal').hide();
+            });
+
+            // Закрыть модальное окно при клике вне модального окна
+            $(window).click(function(event) {
+                if (event.target.id == 'myModal') {
+                    $('#myModal').hide();
+                }
+            });
+
+            // Изменить класс геймпада при выборе опции
+            $('.gamepad-option').click(function() {
+                var gamepadClass = $(this).data('gamepad');
+                changeGamepad(gamepadClass);
+            });
+
+             // Установка геймпада при загрузке страницы
+            var gamepadClass = getQueryVariable('gamepad');
+            if (gamepadClass) {
+                //$('#gamepad-0').attr('class', 'controller ' + gamepadClass + ' active');
+                changeGamepad(gamepadClass);
+            }
+        });
+
+        function changeGamepad(gamepadClass) {
+            switch(gamepadClass) {
+                case 'fpp':
+                case 'n64':
+                case 'nes':
+                case 'fight-stick':
+                case 'gc':
+                    $('.ltrt_percentage').hide();
+                    break;
+                default:
+                    $('.ltrt_percentage').show();
+                    break;
+            }
+            $('#gamepad-0').attr('class', 'controller ' + gamepadClass + ' active');
+            $('#myModal').hide();
+            setQueryVariable('gamepad', gamepadClass);
+        }
+
+
         setInterval(updateData, 10);
     </script>
 
@@ -99,7 +182,7 @@
 :root a[href^="https://traffdaq.com/"], :root a[href^="https://cam4com.go2cloud.org/"], :root a[href^="http://li.blogtrottr.com/click?"], :root a[href*="//parandeya.com/"] { display: none !important; }</style>-->
 </head>
 
-<body style="overflow: hidden; background: transparent !important;">
+<body>
     <div class="ltrt_percentage">
         <div class="data lt">LT: <span id="lt">0%</span></div>
         <div class="data rt">RT: <span id="rt">0%</span></div>
@@ -149,7 +232,7 @@
             </div>
             <div class="fstick" data-name="arcade-stick"></div>
         </div>
-        <div class="controller xbox active half" id="gamepad-0" style="transform-origin: 0px 0px;">
+        <div class="controller xbox active" id="gamepad-0" style="transform-origin: 0px 0px;">
 
             <div class="triggers">
                 <span id="lt_inset" class="trigger left" data-name="button-left-shoulder-bottom" style="opacity: 1; clip-path: inset(100% 0px 0px 0pc);"></span>
@@ -324,6 +407,25 @@
                 <span class="face right" data-name="button-dpad-right"></span>
             </div>
             <div class="fstick" data-name="arcade-stick"></div>
+        </div>
+    </div>
+        <!-- Модальное окно -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Choose gamepad</h2>
+            <div class="gamepad-option" data-gamepad="xbox">Xbox One</div>
+            <div class="gamepad-option" data-gamepad="xbox white">Xbox One White</div>
+            <div class="gamepad-option" data-gamepad="xbox-old">Xbox 360</div>
+            <div class="gamepad-option" data-gamepad="ps">PS3</div>
+            <div class="gamepad-option" data-gamepad="ps white">PS3 White</div>
+            <div class="gamepad-option" data-gamepad="ds4">PS4</div>
+            <div class="gamepad-option" data-gamepad="ds4 white">PS4 White</div>
+            <div class="gamepad-option" data-gamepad="gc">GameCube</div>
+            <div class="gamepad-option" data-gamepad="fpp">FightPad Pro</div>
+            <div class="gamepad-option" data-gamepad="fight-stick">Fight Stick</div>
+            <div class="gamepad-option" data-gamepad="nes">NES</div>
+            <div class="gamepad-option" data-gamepad="n64">Nintendo 64</div>
         </div>
     </div>
 

@@ -19,7 +19,15 @@ app = Flask(__name__, root_path=this_dir, template_folder=template_dir, static_f
 
 # lt_percentage = 0
 # rt_percentage = 0
-g_data = {}
+g_data = {
+    'lt': 0,
+    'rt': 0,
+    'lx': 0,
+    'ly': 0,
+    'rx': 0,
+    'ry': 0,
+}
+PLAYER_NUM = 3
 
 # Отключение логирования запросов Flask
 log = logging.getLogger('werkzeug')
@@ -29,8 +37,19 @@ log.setLevel(logging.ERROR)
 # Функция для получения данных с геймпада
 def get_gamepad_data():
     global g_data
+    global PLAYER_NUM
     # gamepad = XInput.get_connected()[0]  # Получаем первый подключенный геймпад
-    state = XInput.get_state(0)
+    # if len(sys.argv) > 3:
+    #   if sys.argv[3] == 'auto':
+    try:
+        state = XInput.get_state(PLAYER_NUM)
+    except XInput.XInputNotConnectedError:
+        if len(sys.argv) <= 3:
+            PLAYER_NUM += 1
+        return g_data
+    except XInput.XInputBadArgumentError:
+        PLAYER_NUM = 0
+        return g_data
 
     lt = state.Gamepad.bLeftTrigger / 255.0  # Преобразуем значение в диапазон от 0 до 1
     rt = state.Gamepad.bRightTrigger / 255.0  # Преобразуем значение в диапазон от 0 до 1
@@ -75,7 +94,7 @@ def update_gamepad_data():
         g_data = get_gamepad_data()
         # lt_percentage = g_data['lt_percentage']
         # rt_percentage = g_data['rt_percentage']
-        time.sleep(0.1)
+        # time.sleep(0.1)
 
 
 @app.route('/')
@@ -92,6 +111,8 @@ def data():
 if __name__ == "__main__":
     threading.Thread(target=update_gamepad_data, daemon=True).start()
     if len(sys.argv) > 2:
+        if len(sys.argv) > 3:
+            PLAYER_NUM = int(sys.argv[3])
         app.run(host=sys.argv[1], port=int(sys.argv[2]))
     else:
         app.run()
