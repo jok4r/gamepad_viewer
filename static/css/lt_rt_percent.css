@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.ltrt_percentage {
+    display: flex;
+    justify-content: space-between;
+    width: 800px;
+    margin: 0 auto;
+    padding-top: 175px;
+    padding-left: 90px;
+}
+.data {
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+}
+.lt {
+    width: 200px; /* Задаем фиксированную ширину для элемента LT */
+}
+.rt {
+    width: 200px; /* Задаем фиксированную ширину для элемента RT */
+}

@@ -1,0 +1,16 @@
+{
+    "0": "DPAD_UP",
+    "1": "DPAD_DOWN",
+    "2": "DPAD_LEFT",
+    "3": "DPAD_RIGHT",
+    "4": "START",
+    "5": "BACK",
+    "6": "LEFT_THUMB",
+    "7": "RIGHT_THUMB",
+    "8": "LEFT_SHOULDER",
+    "9": "RIGHT_SHOULDER",
+    "12": "A",
+    "13": "B",
+    "14": "X",
+    "15": "Y"
+}
