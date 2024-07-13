@@ -1,1 +1,1 @@
-python -m nuitka --standalone --follow-imports main.py
+python -m nuitka --standalone --follow-imports gamepad_viewer.py
