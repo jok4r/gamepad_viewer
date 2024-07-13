@@ -165,7 +165,3 @@ Click anywhere on the screen to open a modal window where you can select the gam
 ## Example of Script in Action
 
 ![Gamepad Viewer](gamepad.png)
-
----
-
-This README.md file provides detailed instructions in both Russian and English for your Gamepad Viewer project.
