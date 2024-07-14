@@ -5,6 +5,7 @@ import logging
 import XInput
 import os
 import sys
+import socket
 from buttons import get_pressed_buttons, buttons_mapping
 
 abs_pth = os.path.abspath(sys.argv[0])
@@ -108,11 +109,38 @@ def data():
     return jsonify(g_data)
 
 
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    except Exception:
+        ip = "127.0.0.1"
+    finally:
+        s.close()
+    return ip
+
+
 if __name__ == "__main__":
     threading.Thread(target=update_gamepad_data, daemon=True).start()
+    #if len(sys.argv) > 2:
+    #    if len(sys.argv) > 3:
+    #        PLAYER_NUM = int(sys.argv[3])
+    #    app.run(host=sys.argv[1], port=int(sys.argv[2]))
+    #else:
+    #    app.run()
+    host = "127.0.0.1"
+    port = 5000
+
+    if len(sys.argv) > 1:
+        host = sys.argv[1]
     if len(sys.argv) > 2:
-        if len(sys.argv) > 3:
-            PLAYER_NUM = int(sys.argv[3])
-        app.run(host=sys.argv[1], port=int(sys.argv[2]))
-    else:
-        app.run()
+        port = int(sys.argv[2])
+    if len(sys.argv) > 3:
+        controller_index = int(sys.argv[3])
+
+    if host != "127.0.0.1":
+        host = get_ip()
+
+    print(f"Server started at http://{host}:{port}")
+    app.run(host=host, port=port)
