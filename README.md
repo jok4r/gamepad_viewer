@@ -48,7 +48,7 @@ python3 gamepad_viewer.py [ip] [port] [player_id]
 ### Alternative Launch
 You can also download the release from GitHub and run the server without installing Python and dependencies:
 
-1. Download the archive [gamepad_viewer.zip](https://github.com/yourusername/gamepad_viewer/releases/latest).
+1. Download the archive [gamepad_viewer.zip](https://github.com/jok4r/gamepad_viewer/releases/latest).
 2. Extract the archive.
 3. Run `gamepad_viewer.bat` (you can edit the address in it where the server will run).
 
@@ -132,7 +132,7 @@ python3 gamepad_viewer.py [ip] [port] [player_id]
 ### Альтернативный запуск
 Вы также можете скачать релиз с GitHub и запустить сервер без установки Python и зависимостей:
 
-1. Скачайте архив [gamepad_viewer.zip](https://github.com/yourusername/gamepad_viewer/releases/latest).
+1. Скачайте архив [gamepad_viewer.zip](https://github.com/jok4r/gamepad_viewer/releases/latest).
 2. Распакуйте архив.
 3. Запустите `gamepad_viewer.bat` (в нем можно отредактировать адрес, на котором будет запущен сервер).
 
