@@ -47,9 +47,11 @@ def get_gamepad_data():
     except XInput.XInputNotConnectedError:
         if len(sys.argv) <= 3:
             PLAYER_NUM += 1
+        time.sleep(1)
         return g_data
     except XInput.XInputBadArgumentError:
         PLAYER_NUM = 0
+        time.sleep(1)
         return g_data
 
     lt = state.Gamepad.bLeftTrigger / 255.0  # Преобразуем значение в диапазон от 0 до 1
@@ -93,9 +95,7 @@ def update_gamepad_data():
     global g_data
     while True:
         g_data = get_gamepad_data()
-        # lt_percentage = g_data['lt_percentage']
-        # rt_percentage = g_data['rt_percentage']
-        # time.sleep(0.1)
+        time.sleep(0.01)
 
 
 @app.route('/')
@@ -123,12 +123,6 @@ def get_ip():
 
 if __name__ == "__main__":
     threading.Thread(target=update_gamepad_data, daemon=True).start()
-    #if len(sys.argv) > 2:
-    #    if len(sys.argv) > 3:
-    #        PLAYER_NUM = int(sys.argv[3])
-    #    app.run(host=sys.argv[1], port=int(sys.argv[2]))
-    #else:
-    #    app.run()
     host = "127.0.0.1"
     port = 5000
 
@@ -139,8 +133,10 @@ if __name__ == "__main__":
     if len(sys.argv) > 3:
         controller_index = int(sys.argv[3])
 
-    if host != "127.0.0.1":
-        host = get_ip()
+    if host == "127.0.0.1":
+        print_host = host
+    else:
+        print_host = get_ip()
 
-    print(f"Server started at http://{host}:{port}")
+    print(f"Server started at http://{print_host}:{port}")
     app.run(host=host, port=port)
